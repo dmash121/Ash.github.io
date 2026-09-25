@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>BURAT</title>
     <style>
+      /* Main Page Structure */
       html,
       body {
         margin: 0;
         padding: 0;
-        min-height: 100%;
-        background: #E793B7;
-        color: #ffffff;
-        font:
-          15px/1.45 "Segoe UI",
-          system-ui,
-          sans-serif;
+        min-height: 100vh;
+        background: #0b0d10; /* Dark premium space background */
+        color: #c8ced8;
+        font: 15px/1.45 "Segoe UI", system-ui, sans-serif;
       }
+      
+      /* Top Navbar Branding Banner */
       #brand {
         text-align: center;
-        padding: 8px 10px;
+        padding: 12px 10px;
         background: #0e1116;
         border-bottom: 1px solid #1e2732;
       }
@@ -29,6 +29,7 @@
         margin-right: 8px;
         border-radius: 50%;
         vertical-align: middle;
+        object-fit: cover;
       }
       #brand b {
         font-size: 15px;
@@ -38,35 +39,57 @@
         vertical-align: middle;
       }
 
-      /* running: a spinner under the brand. jb.js sets body.done / body.fail / body.log. */
+      /* Premium Loading Spinner */
       #spin {
         position: fixed;
         top: calc(50% + 20px);
         left: 50%;
-        width: 46px;
-        height: 46px;
-        margin: -23px 0 0 -23px;
+        width: 48px;
+        height: 48px;
+        margin: -24px 0 0 -24px;
         border: 4px solid #1e2732;
-        border-top-color: #7fd0a0;
+        border-top-color: #e793b7; /* Zero Two themed pink loading track indicator */
         border-radius: 50%;
-        animation: spin 0.9s linear infinite;
+        animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        box-shadow: 0 0 15px rgba(231, 147, 183, 0.2);
       }
       @keyframes spin {
         to {
           transform: rotate(360deg);
         }
       }
+
+      /* Sleek Cyberpunk Container Notification Card */
       #msg {
         position: fixed;
         top: 50%;
-        left: 0;
-        right: 0;
-        transform: translateY(-50%);
+        left: 50%;
+        transform: translate(-50%, -50%);
         text-align: center;
-        font-size: 16px;
+        font-size: 18px;
+        font-weight: 600;
         letter-spacing: 0.5px;
         display: none;
+        background: #141922; /* Card background color */
+        border: 1px solid #222c3a;
+        padding: 35px 40px;
+        border-radius: 12px;
+        color: #ff5555; /* Vibrant error text color */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        min-width: 280px;
+        max-width: 420px;
+        overflow: hidden;
       }
+
+      /* Glowing Theme Color Border Line above card notice */
+      #msg::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #e793b7, #bd93f9); /* Zero Two pink & purple theme track */
+      }
+
       #wrap {
         padding: 0;
       }
@@ -75,6 +98,7 @@
         display: none;
       }
 
+      /* App Execution Flow Logic States handled by jb.js */
       body.done #spin {
         display: none;
       }
@@ -85,68 +109,56 @@
         display: block;
       }
 
-      /* ?log=1 -- the full step log, styled like the landing. */
+      /* ?log=1 -- The detailed debugging stream display */
       body.log #spin,
       body.log #msg {
         display: none;
       }
       body.log #wrap {
-        padding: 14px 18px;
+        padding: 16px 20px;
       }
       body.log #state {
         display: block;
         font-size: 22px;
         font-weight: 700;
-        margin: 0 0 8px;
+        margin: 0 0 10px;
       }
       body.log #out {
         display: block;
         white-space: pre-wrap;
-        font:
-          12px/1.45 Consolas,
-          monospace;
-        background: #E793B7;
+        font: 13px/1.5 Consolas, "Courier New", monospace;
+        background: #0e1116; /* Clean dark styling for log feed streaming */
         border: 1px solid #1e2732;
-        border-radius: 5px;
-        padding: 10px 12px;
-        height: calc(100vh - 141px);
+        border-radius: 8px;
+        padding: 14px 16px;
+        height: calc(100vh - 145px);
         overflow-y: auto;
+        color: #a9b1bc;
       }
-      .ok {
-        color: #7fd0a0;
-      }
-      .bad {
-        color: #d08a7f;
-      }
-      .warn {
-        color: #d8c07f;
-      }
-      .safe {
-        color: #7fd0a0;
-      }
-      .danger {
-        color: #d08a7f;
-      }
-      code {
-        color: #9fb3d0;
-      }
+
+      /* Stream Terminal Output Log Color Coding */
+      .ok, .safe { color: #7fd0a0; }
+      .bad, .danger { color: #ff5555; }
+      .warn { color: #d8c07f; }
+      code { color: #9fb3d0; }
     </style>
   </head>
   <body>
     <div id="brand">
-      <img
-        src="logo_zero_two.png"
-        alt=""
-        width="28"
-        height="28"
-      /><b>BURAT</b>
+      <img src="logo_zero_two.png" alt="Logo" />
+      <b>BURAT</b>
     </div>
+    
+    <!-- Active State Animations -->
     <div id="spin"></div>
     <div id="msg">FAILED Restart Daw Boi</div>
+    
+    <!-- Full Debug Logging Data Track Container -->
     <div id="wrap">
       <div id="state"></div>
       <div id="out"></div>
     </div>
+    
     <script type="module">
       import "./jb.js?v=10";
     </script>
